@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArabXpert</title>
+
+    <!-- =========================================
+         CSS
+         ========================================= -->
+    <style>
+        /* --- 1. Body & Background --- */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f2e9d8;
+        }
+
+        /* --- 2. Modern Navbar (Top) --- */
+        .modern-nav {
+            background: white;
+            padding: 15px 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            background: #145a32;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .dropdown {
+            position: relative;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .dropdown > span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background: white;
+            min-width: 160px;
+            z-index: 1000;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            top: 100%;
+            left: 0;
+        }
+
+        .dropdown-content div {
+            color: #145a32;
+            padding: 12px 20px;
+            cursor: pointer;
+        }
+
+        .dropdown-content div:hover {
+            background: #f0f8f0;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-buttons-group {
+            display: flex;
+            gap: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .social-icons a {
+            background: #f0f0f0;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .main-cta {
+            padding: 12px 25px;
+            background: #D4AF37;
+            color: #0f5132;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        /* --- 3. Hero Section (Homepage) --- */
+        #home {
+            margin-top: 80px;
+            padding: 0;
+            position: relative;
+        }
+
+        .hero-container {
+            background: linear-gradient(to right, rgba(255,255,255,0.9), rgba(255,255,255,0.8)), url('6192781909973208291.jpg') no-repeat center center;
+            background-size: cover;
+            height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5% 0 8%;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 550px;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: 48px;
+            font-weight: bold;
+            line-height: 1.2;
+            margin-bottom: 15px;
+            color: #0f5132;
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            opacity: 0.85;
+            margin-bottom: 30px;
+            color: #0f5132;
+        }
+
+        .hero-button {
+            padding: 15px 30px;
+            font-size: 20px;
+            background: #D4AF37;
+            color: #0f5132;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .hero-button:hover {
+            background: #f7d774;
+        }
+
+        .hero-graphic {
+            z-index: 2;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .hero-graphic img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        /* --- 4. General Page Styling --- */
+        section:not(#home) {
+            padding: 30px;
+        }
+
+        header { display: none; }
+        .page { display: none; }
+        .active { display: block; }
+
+        h2 {
+            color: #0f5132;
+            font-size: 40px;
+            text-align: center;
+        }
+
+        /* --- 5. Module Cards --- */
+        .module-card {
+            background: white;
+            width: 260px;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            border-top: 6px solid #145a32;
+            cursor: pointer;
+            transition: 0.3s;
+            text-align: center;
+        }
+
+        .module-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+        }
+
+        .module-card h3 {
+            color: #145a32;
+            font-size: 24px;
+        }
+
+        .module-card p {
+            color: #0f5132;
+            margin-top: 10px;
+        }
+
+        /* --- 6. Bottom Navigation Buttons (Only on Non-Home Pages) --- */
+        #nav-buttons-bottom {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            gap: 10px;
+            z-index: 2000;
+        }
+
+        #nav-buttons-bottom button {
+            padding: 12px 18px;
+            font-size: 18px;
+            border: none;
+            border-radius: 6px;
+            background: #145a32;
+            color: white;
+            cursor: pointer;
+        }
+
+        #nav-buttons-bottom button:hover {
+            background: #0bb50b;
+        }
+
+        /* --- 7. Tabs (Module 2) --- */
+        .tab-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .tab-btn {
+            padding: 12px 25px;
+            font-size: 18px;
+            background: #145a32;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .tab-btn:hover,
+        .tab-btn.active {
+            background: #0bb50b;
+        }
+
+        .tab-content { display: none; }
+        .active-tab { display: block; }
+
+        /* --- 8. Item Grid (Words & Phrases) --- */
+        .item-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            padding: 20px;
+        }
+
+        .item-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .item-card:hover {
+            transform: scale(1.05);
+            background: #e6ffe9;
+        }
+
+        .item-img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .item-arab {
+            font-size: 28px;
+            color: #145a32;
+            margin-top: 10px;
+        }
+
+        .item-melayu {
+            font-size: 16px;
+            color: #0f5132;
+        }
+
+        /* --- 9. Arabic Letter Grid (Module 1) --- */
+        .huruf-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+            padding: 10px;
+        }
+
+        .huruf-box {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+            text-align: center;
+            font-size: 40px;
+            cursor: pointer;
+            color: #145A32;
+            transition: 0.3s;
+        }
+
+        .huruf-box:hover {
+            background: #d9ffe0;
+            transform: scale(1.05);
+        }
+
+        .huruf-name {
+            font-size: 18px;
+            margin-top: 10px;
+            color: #0f5132;
+        }
+
+        /* --- 10. Quiz Styles (All Modules) --- */
+        .quiz-container {
+            max-width: 500px;
+            margin: 30px auto;
+            text-align: center;
+        }
+
+        .quiz-option {
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            cursor: pointer;
+            font-size: 22px;
+            transition: 0.3s;
+        }
+
+        .quiz-option:hover {
+            background: #d9ffe0;
+        }
+
+        .correct { background: #0bb50b; color: white; }
+        .wrong { background: #ff4d4d; color: white; }
+
+        /* --- 11. "Next Question" Button Style --- */
+        .next-btn-style {
+            padding: 12px 25px;
+            font-size: 18px;
+            background: #D4AF37;
+            color: #0f5132;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .next-btn-style:hover {
+            background: #f7d774;
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- =========================================
+         HTML
+         ========================================= -->
+
+    <!-- 1. Modern Top Navbar -->
+    <nav class="modern-nav">
+        <div class="logo-container">
+            <div class="logo">أ</div>
+            <span style="font-size: 24px; font-weight: bold; color: #145a32;">ArabXpert</span>
+        </div>
+
+        <div class="nav-links">
+            <div class="dropdown">
+                <span>Menu ▼</span>
+                <div class="dropdown-content">
+                    <div onclick="showPage('modul1')">Modul 1</div>
+                    <div onclick="showPage('modul2')">Modul 2</div>
+                    <div onclick="showPage('modul3')">Modul 3</div>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <span>Quiz ▼</span>
+                <div class="dropdown-content">
+                    <div onclick="showPage('quiz1')">Modul 1</div>
+                    <div onclick="showPage('quiz2')">Modul 2</div>
+                    <div onclick="showPage('quiz3')">Modul 3</div>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <span>Permainan ▼</span>
+                <div class="dropdown-content">
+                    <div onclick="alert('Permainan akan datang!')">Modul 1</div>
+                    <div onclick="alert('Permainan akan datang!')">Modul 2</div>
+                    <div onclick="alert('Permainan akan datang!')">Modul 3</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 2. Homepage -->
+    <section id="home" class="page active">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">E-PEMBELAJARAN BAHASA ARAB BERKONSEPKAN ISLAMI DAN MODEN</h1>
+                <p class="hero-subtitle">Membawa pengalaman hidup ke dalam perjalanan pembelajaran Bahasa Arab anda dengan ArabXpert</p>
+                <button class="hero-button" onclick="showPage('modul1')">Mulakan Pembelajaran</button>
+            </div>
+            <div class="hero-graphic">
+                <img src="https://via.placeholder.com/600x400?text=Islamic+App+Interface" alt="GAMBAR">
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Module 1: Arabic Letters -->
+    <section id="modul1" class="page">
+        <h2>Modul 1: Mengenal Huruf-Huruf Arab</h2>
+        <p style="text-align:center;">Klik mana-mana huruf untuk bunyi ringkas.</p>
+        <div class="huruf-grid">
+            <script>
+                const hurufList = [
+                    "ا|Alif", "ب|Ba'", "ت|Ta'", "ث|Tsa'",
+                    "ج|Jim", "ح|Ha'", "خ|Kha'", "د|Dal",
+                    "ذ|Dzal", "ر|Ra'", "ز|Zai'", "س|Sin",
+                    "ش|Syin", "ص|Sod", "ض|Dhod", "ط|Tho'",
+                    "ظ|Zho'", "ع|Ain", "غ|Ghain", "ف|Fa'",
+                    "ق|Qaf", "ك|Kaf", "ل|Lam", "م|Mim",
+                    "ن|Nun", "و|Wau", "هـ|Ha", "ي|Ya'"
+                ];
+
+                document.write(hurufList.map(h => {
+                    let [arab, nama] = h.split("|");
+                    return `
+                        <div class="huruf-box" onclick="playBeep()">
+                            ${arab}
+                            <div class="huruf-name">${nama}</div>
+                        </div>`;
+                }).join(""));
+            </script>
+        </div>
+    </section>
+
+    <!-- 4. Module 2: Arabic Words -->
+    <section id="modul2" class="page">
+        <h2>Modul 2: Mengenal Perkataan Arab</h2>
+        <p style="text-align:center;">Klik pada kad untuk melihat gambar, membaca perkataan dan mendengar audio.</p>
+        <div class="tab-container">
+            <button class="tab-btn active" onclick="openTab('badan', this)">Anggota Badan</button>
+            <button class="tab-btn" onclick="openTab('haiwan', this)">Haiwan</button>
+            <button class="tab-btn" onclick="openTab('tempat', this)">Nama Tempat</button>
+        </div>
+
+        <div id="badan" class="tab-content active-tab">
+            <div class="item-grid">
+                <div class="item-card" onclick="playSound('audio/kepala.mp3')">
+                    <img src="img/kepala.jpg" class="item-img">
+                    <div class="item-arab">رَأْس</div>
+                    <div class="item-melayu">Kepala</div>
+                </div>
+                <div class="item-card" onclick="playSound('audio/tangan.mp3')">
+                    <img src="img/tangan.jpg" class="item-img">
+                    <div class="item-arab">يَد</div>
+                    <div class="item-melayu">Tangan</div>
+                </div>
+                <div class="item-card" onclick="playSound('audio/kaki.mp3')">
+                    <img src="img/kaki.jpg" class="item-img">
+                    <div class="item-arab">رِجْل</div>
+                    <div class="item-melayu">Kaki</div>
+                </div>
+                <div class="item-card" onclick="playSound('audio/dahi.mp3')">
+                    <img src="img/dahi.jpg" class="item-img">
+                    <div class="item-arab">جَبْهَةٌ</div>
+                    <div class="item-melayu">Dahi</div>
+                </div>
+                <div class="item-card" onclick="playSound('audio/mata.mp3')">
+                    <img src="img/mata.jpg" class="item-img">
+                    <div class="item-arab">عَيْنٌ</div>
+                    <div class="item-melayu">Mata</div>
+                </div>
+                <div class="item-card" onclick="playSound('audio/hidung.mp3')">
+                    <img src="img/hidung.jpg" class="item-img">
+                    <div class="item-arab">أَنْفٌ</div>
+                    <div class="item-melayu">Hidung</div>
+                </div>
+                <div class="item-card" onclick="playSound('audio/pipi.mp3')">
+                    <img src="img/pipi.jpg" class="item-img">
+                    <div class="item-arab">خَدٌّ</div>
+                    <div class="item-melayu">Pipi</div>
+                </div>
+                <div class="item-card" onclick="playSound('audio/mulut.mp3')">
+                    <img src="img/mulut.jpg" class="item-img">
+                    <div class="item-arab">فَمٌ</div>
+                    <div class="item-melayu">Mulut</div>
+                </div>
+                <div class="item-card" onclick="playSound('audio/gigi.mp3')">
+                    <img src="img/gigi.jpg" class="item-img">
+                    <div class="item-arab">سِنٌّ</div>
+                    <div class="item-melayu">Gigi</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="haiwan" class="tab-content">
+            <div class="item-grid">
+                <div class="item-card" onclick="playSound('audio/kucing.mp3')">
+                    <img src="img/kucing.jpg" class="item-img">
+                    <div class="item-arab">قِطَّة</div>
+                    <div class="item-melayu">Kucing</div>
+                </div>
+                <div class="item-card" onclick="playSound('audio/anjing.mp3')">
+                    <img src="img/anjing.jpg" class="item-img">
+                    <div class="item-arab">كَلْب</div>
+                    <div class="item-melayu">Anjing</div>
+                </div>
+                <div class="item-card" onclick="playSound('audio/burung.mp3')">
+                    <img src="img/burung.jpg" class="item-img">
+                    <div class="item-arab">طَائِر</div>
+                    <div class="item-melayu">Burung</div>
+                </div>
+                <div class="item-card" onclick="playSound('audio/singa.mp3')">
+                    <img src="img/singa.jpg" class="item-img">
+                    <div class="item-arab">أسَدٌ</div>
+                    <div class="item-melayu">Singa</div>
+                </div>
+                <div class="item-card" onclick="playSound('audio/gajah.mp3')">
+                    <img src="img/gajah.jpg" class="item-img">
+                    <div class="item-arab">فِيلٌ</div>
+                    <div class="item-melayu">Gajah</div>
+                </div>
+                <div class="item-card" onclick="playSound('audio/harimau.mp3')">
+                    <img src="img/harimau.jpg" class="item-img">
+                    <div class="item-arab">نَمِرٌ</div>
+                    <div class="item-melayu">Harimau</div>
+                </div>
+                <div class="item-card" onclick="playSound('audio/kudabelang.mp3')">
+                    <img src="img/kudabelang.jpg" class="item-img">
+                    <div class="item-arab">مَارٌ وَحْشِيٌّ</div>
+                    <div class="item-melayu">Kuda Belang</div>
+                </div>
+                <div class="item-card" onclick="playSound('audio/rusa.mp3')">
+                    <img src="img/rusa.jpg" class="item-img">
+                    <div class="item-arab">غَزَالٌ</div>
+                    <div class="item-melayu">Rusa</div>
+                </div>
+                <div class="item-card" onclick="playSound('audio/ular.mp3')">
+                    <img src="img/ular.jpg" class="item-img">
+                    <div class="item-arab">حَيَّةٌ</div>
+                    <div class="item-melayu">Ular</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tempat" class="tab-content">
+            <div class="item-grid">
+                <div class="item-card" onclick="playSound('audio/rumah.mp3')">
+                    <img src="img/rumah.jpg" class="item-img">
+                    <div class="item-arab">بَيْت</div>
+                    <div class="item-melayu">Rumah</div>
+                </div>
+                <div class="item-card" onclick="playSound('audio/sekolah.mp3')">
+                    <img src="img/sekolah.jpg" class="item-img">
+                    <div class="item-arab">مَدْرَسَة</div>
+                    <div class="item-melayu">Sekolah</div>
+                </div>
+                <div class="item-card" onclick="playSound('audio/masjid.mp3')">
+                    <img src="img/masjid.jpg" class="item-img">
+                    <div class="item-arab">مَسْجِد</div>
+                    <div class="item-melayu">Masjid</div>
+                </div>
+                <div class="item-card" onclick="playSound('audio/kedai.mp3')">
+                    <img src="img/kedai.jpg" class="item-img">
+                    <div class="item-arab">مَتْجَرٌ</div>
+                    <div class="item-melayu">Kedai</div>
+                </div>
+                <div class="item-card" onclick="playSound('audio/hotel.mp3')">
+                    <img src="img/hotel.jpg" class="item-img">
+                    <div class="item-arab">فُنْدُقٌ</div>
+                    <div class="item-melayu">Hotel</div>
+                </div>
+                <div class="item-card" onclick="playSound('audio/restoran.mp3')">
+                    <img src="img/restoran.jpg" class="item-img">
+                    <div class="item-arab">مَطْعَمٌ</div>
+                    <div class="item-melayu">Restoran</div>
+                </div>
+                <div class="item-card" onclick="playSound('audio/lapanganterbang.mp3')">
+                    <img src="img/lapanganterbang.jpg" class="item-img">
+                    <div class="item-arab">مَطَارٌ</div>
+                    <div class="item-melayu">Lapangan Terbang</div>
+                </div>
+                <div class="item-card" onclick="playSound('audio/pasar.mp3')">
+                    <img src="img/pasar.jpg" class="item-img">
+                    <div class="item-arab">سُوْقٌ</div>
+                    <div class="item-melayu">Pasar</div>
+                </div>
+                <div class="item-card" onclick="playSound('audio/perpustakaan.mp3')">
+                    <img src="img/perpustakaan.jpg" class="item-img">
+                    <div class="item-arab">مَكْتَبَةٌ</div>
+                    <div class="item-melayu">Perpustakaan</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Module 3: Short Phrases -->
+    <section id="modul3" class="page">
+        <h2>Modul 3: Mengenal Ayat Pendek Arab</h2>
+        <p style="text-align:center;">Klik pada kad untuk mendengar ayat dan melihat maksud.</p>
+        <div class="item-grid">
+            <div class="item-card" onclick="playSound('audio/saya_di_sekolah.mp3')">
+                <img src="img/sayasekolah.jpg" class="item-img">
+                <div class="item-arab">أَنَا فِي الْمَدْرَسَة</div>
+                <div class="item-melayu">Saya di sekolah</div>
+            </div>
+            <div class="item-card" onclick="playSound('audio/saya_sedang_makan.mp3')">
+                <img src="img/sayamakan.jpg" class="item-img">
+                <div class="item-arab">أَنَا أَكُلُ الآن</div>
+                <div class="item-melayu">Saya sedang makan</div>
+            </div>
+            <div class="item-card" onclick="playSound('audio/dia_membaca_buku.mp3')">
+                <img src="img/membacabuku.jpg" class="item-img">
+                <div class="item-arab">هِيَ تَقْرَأُ كِتَابًا</div>
+                <div class="item-melayu">Dia membaca buku</div>
+            </div>
+            <div class="item-card" onclick="playSound('audio/saya_suka_kopi.mp3')">
+                <img src="img/sayasukakopi.jpg" class="item-img">
+                <div class="item-arab">أَنَا أُحِبُّ الْقَهْوَة</div>
+                <div class="item-melayu">Saya suka kopi</div>
+            </div>
+            <div class="item-card" onclick="playSound('audio/hobi_main_bola.mp3')">
+                <img src="img/hobibola.jpg" class="item-img">
+                <div class="item-arab">هِوَايَتِي لَعِبُ الْكُرَةِ</div>
+                <div class="item-melayu">Hobi saya bermain bola</div>
+            </div>
+            <div class="item-card" onclick="playSound('audio/tq.mp3')">
+                <img src="img/terimakasih.jpg" class="item-img">
+                <div class="item-arab">شُكْرًا</div>
+                <div class="item-melayu">Terima kasih</div>
+            </div>
+            <div class="item-card" onclick="playSound('audio/hari_ini_selasa.mp3')">
+                <img src="img/hariselasa.jpg" class="item-img">
+                <div class="item-arab">ٱلْيَوْمَ يَوْمُ ٱلثُّلاثَاءِ</div>
+                <div class="item-melayu">Hari ini hari selasa</div>
+            </div>
+            <div class="item-card" onclick="playSound('audio/saya_motor.mp3')">
+                <img src="img/sayamenunggangmotor.jpg" class="item-img">
+                <div class="item-arab">أَنَا أَرْكَبُ دَرَّاجَةً نَارِيَّةً</div>
+                <div class="item-melayu">Saya menunggang motosikal</div>
+            </div>
+            <div class="item-card" onclick="playSound('audio/umur_saya_19_tahun.mp3')">
+                <img src="img/umur19.jpg" class="item-img">
+                <div class="item-arab">عُمري تِسْعَ عَشْرَةَ سَنَةً</div>
+                <div class="item-melayu">Umur saya 19 tahun</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Quiz Module 1 -->
+    <section id="quiz1" class="page">
+        <h2>Kuiz Modul 1: Huruf Arab</h2>
+        <p style="text-align:center;">Pilih nama huruf yang betul</p>
+        <div class="quiz-container">
+            <div id="quiz-letter" style="font-size:80px; color:#145a32; margin-bottom:20px; font-weight:bold; letter-spacing:2px;"></div>
+            <div id="quiz-options"></div>
+            <div id="quiz-feedback"></div>
+            <button id="next-btn" class="next-btn-style">▶ Soalan Seterusnya</button>
+        </div>
+        <div id="quiz-result"></div>
+    </section>
+
+    <!-- 7. Quiz Module 2 -->
+    <section id="quiz2" class="page">
+        <h2>Kuiz Modul 2: Ayat Pendek Arab</h2>
+        <p style="text-align:center;">Pilih perkataan yang betul untuk gambar yang ditunjukkan</p>
+        <div class="quiz-container">
+            <div id="quiz-img"></div>
+            <div id="quiz-options2"></div>
+            <div id="quiz-feedback2"></div>
+            <button id="next-btn2" class="next-btn-style">▶ Soalan Seterusnya</button>
+        </div>
+        <div id="quiz-result2"></div>
+    </section>
+
+    <!-- 8. Quiz Module 3 -->
+    <section id="quiz3" class="page">
+        <h2>Kuiz Modul 3: Ayat Ringkas</h2>
+        <p style="text-align:center;">Pilih ayat yang betul untuk gambar</p>
+        <div class="quiz-container">
+            <div id="quiz-img3"></div>
+            <div id="quiz-options3"></div>
+            <div id="quiz-feedback3"></div>
+            <button id="next-btn3" class="next-btn-style">▶ Soalan Seterusnya</button>
+        </div>
+        <div id="quiz-result3"></div>
+    </section>
+
+    <!-- 9. Bottom Navigation Buttons -->
+    <div id="nav-buttons-bottom" class="nav-buttons">
+        <button onclick="goBack()">Kembali</button>
+        <button onclick="showPage('home')">Home</button>
+    </div>
+
+    <!-- =========================================
+         JAVASCRIPT
+         ========================================= -->
+    <script>
+        /* --- 1. Page Navigation & History --- */
+        let pageHistory = ["home"];
+
+        function showPage(pageName) {
+            // Control visibility of bottom buttons
+            const navButtons = document.getElementById('nav-buttons-bottom');
+            if (navButtons) {
+                if (pageName === 'home') {
+                    navButtons.style.display = 'none';
+                } else {
+                    navButtons.style.display = 'flex';
+                }
+            }
+
+            // Switch active page
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const targetPage = document.getElementById(pageName);
+            if (targetPage) targetPage.classList.add('active');
+
+            // Save navigation history
+            if (pageHistory[pageHistory.length - 1] !== pageName) {
+                pageHistory.push(pageName);
+            }
+
+            // Auto-load quiz when entering quiz pages
+            if (pageName === 'quiz1') loadQuestion();
+            else if (pageName === 'quiz2') loadQuestion2();
+            else if (pageName === 'quiz3') loadQuestion3();
+        }
+
+        function goBack() {
+            if (pageHistory.length > 1) {
+                pageHistory.pop();
+                let lastPage = pageHistory[pageHistory.length - 1];
+                showPage(lastPage);
+            }
+        }
+
+        /* --- 2. Tab Control (Module 2) --- */
+        function openTab(tabName, element) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active-tab'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabName)?.classList.add('active-tab');
+            element?.classList.add('active');
+        }
+
+        /* --- 3. Audio Placeholder (Temporary) --- */
+        function playSound(audioFile) {
+            console.log("Playing audio:", audioFile);
+        }
+
+        function playBeep() {
+            console.log("Arabic letter clicked");
+        }
+
+        /* --- 4. Quiz Module 1 Logic --- */
+        const quiz1Data = [
+            { letter: "ا", answer: "Alif", options: ["Alif","Ba'","Jim"] },
+            { letter: "ب", answer: "Ba'", options: ["Ta'","Ba'","Dal"] },
+            { letter: "ت", answer: "Ta'", options: ["Tha","Ta'","Jim"] },
+            { letter: "ج", answer: "Jim", options: ["Jim","Ha'","Kha'"] },
+            { letter: "ح", answer: "Ha'", options: ["Ha'","Kha'","Dzal"] },
+            { letter: "خ", answer: "Kha'", options: ["Ha'","Jim","Kha'"] }
+        ];
+
+        let currentQ = 0, score = 0;
+        const quizLetter = document.getElementById('quiz-letter');
+        const quizOptions = document.getElementById('quiz-options');
+        const quizFeedback = document.getElementById('quiz-feedback');
+        const nextBtn = document.getElementById('next-btn');
+        const quizResult = document.getElementById('quiz-result');
+
+        function loadQuestion() {
+            quizFeedback.textContent = '';
+            nextBtn.style.display = 'none';
+            quizOptions.innerHTML = '';
+            quizResult.textContent = '';
+            quizLetter.textContent = quiz1Data[currentQ].letter;
+            quiz1Data[currentQ].options.forEach(opt => {
+                const btn = document.createElement('div');
+                btn.textContent = opt;
+                btn.classList.add('quiz-option');
+                btn.onclick = () => checkAnswer(btn, opt);
+                quizOptions.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(btn, selected) {
+            const correct = quiz1Data[currentQ].answer;
+            if (selected === correct) {
+                btn.classList.add('correct');
+                score += 10;
+                playSound('audio/correct.mp3');
+                quizFeedback.textContent = "Betul!";
+            } else {
+                btn.classList.add('wrong');
+                playSound('audio/wrong.mp3');
+                quizFeedback.textContent = `Salah! Jawapan betul: ${correct}`;
+            }
+            document.querySelectorAll('.quiz-option').forEach(b => b.onclick = null);
+            nextBtn.style.display = 'inline-block';
+        }
+
+        nextBtn.onclick = () => {
+            if (++currentQ < quiz1Data.length) loadQuestion();
+            else {
+                quizResult.textContent = `Kuiz Tamat! Skor anda: ${score}/${quiz1Data.length*10}`;
+                quizLetter.style.display = 'none';
+                quizOptions.style.display = 'none';
+                quizFeedback.style.display = 'none';
+                nextBtn.style.display = 'none';
+            }
+        }
+
+        /* --- 5. Quiz Module 2 Logic --- */
+        const quiz2Data = [
+            { img: "img/kepala.jpg", answer: "رَأْس", options: ["رِجْل","يَد","رَأْس"] },
+            { img: "img/kucing.jpg", answer: "قِطَّة", options: ["كَلْب","قِطَّة","طَائِر"] },
+            { img: "img/rumah.jpg", answer: "بَيْت", options: ["مَسْجِد","بَيْت","مَدْرَسَة"] }
+        ];
+
+        let currentQ2 = 0, score2 = 0;
+        const quizImg = document.getElementById('quiz-img');
+        const quizOptions2 = document.getElementById('quiz-options2');
+        const quizFeedback2 = document.getElementById('quiz-feedback2');
+        const nextBtn2 = document.getElementById('next-btn2');
+        const quizResult2 = document.getElementById('quiz-result2');
+
+        function loadQuestion2() {
+            quizFeedback2.textContent = '';
+            nextBtn2.style.display = 'none';
+            quizOptions2.innerHTML = '';
+            quizResult2.textContent = '';
+            quizImg.innerHTML = `<img src="${quiz2Data[currentQ2].img}" style="width:100%;height:180px;object-fit:cover;border-radius:10px;">`;
+            quiz2Data[currentQ2].options.forEach(opt => {
+                const btn = document.createElement('div');
+                btn.textContent = opt;
+                btn.classList.add('quiz-option');
+                btn.onclick = () => checkAnswer2(btn, opt);
+                quizOptions2.appendChild(btn);
+            });
+        }
+
+        function checkAnswer2(btn, selected) {
+            const correct = quiz2Data[currentQ2].answer;
+            if (selected === correct) {
+                btn.classList.add('correct');
+                score2 += 10;
+                playSound('audio/correct.mp3');
+                quizFeedback2.textContent = "Betul!";
+            } else {
+                btn.classList.add('wrong');
+                playSound('audio/wrong.mp3');
+                quizFeedback2.textContent = `Salah! Jawapan betul: ${correct}`;
+            }
+            document.querySelectorAll('#quiz-options2 .quiz-option').forEach(b => b.onclick = null);
+            nextBtn2.style.display = 'inline-block';
+        }
+
+        nextBtn2.onclick = () => {
+            if (++currentQ2 < quiz2Data.length) loadQuestion2();
+            else {
+                quizResult2.textContent = `Kuiz Tamat! Skor anda: ${score2}/${quiz2Data.length*10}`;
+                quizImg.style.display = 'none';
+                quizOptions2.style.display = 'none';
+                quizFeedback2.style.display = 'none';
+                nextBtn2.style.display = 'none';
+            }
+        }
+
+        /* --- 6. Quiz Module 3 Logic --- */
+        const quiz3Data = [
+            { img: "img/makan.jpg", answer: "أُرِيدُ أَنْ آكُل", options: ["أُرِيدُ أَنْ أَنَام","أُرِيدُ أَنْ آكُل","أُرِيدُ أَنْ أَشْرَب"] },
+            { img: "img/minum.jpg", answer: "أُرِيدُ أَنْ أَشْرَب", options: ["أُرِيدُ أَنْ آكُل","أُرِيدُ أَنْ أَشْرَب","أُرِيدُ أَنْ أَنَام"] },
+            { img: "img/tidur.jpg", answer: "أُرِيدُ أَنْ أَنَام", options: ["أُرِيدُ أَنْ أَشْرَب","أُرِيدُ أَنْ أَنَام","أُرِيدُ أَنْ آكُل"] }
+        ];
+
+        let currentQ3 = 0, score3 = 0;
+        const quizImg3 = document.getElementById('quiz-img3');
+        const quizOptions3 = document.getElementById('quiz-options3');
+        const quizFeedback3 = document.getElementById('quiz-feedback3');
+        const nextBtn3 = document.getElementById('next-btn3');
+        const quizResult3 = document.getElementById('quiz-result3');
+
+        function loadQuestion3() {
+            quizFeedback3.textContent = '';
+            nextBtn3.style.display = 'none';
+            quizOptions3.innerHTML = '';
+            quizResult3.textContent = '';
+            quizImg3.innerHTML = `<img src="${quiz3Data[currentQ3].img}" style="width:100%;height:180px;object-fit:cover;border-radius:10px;">`;
+            quiz3Data[currentQ3].options.forEach(opt => {
+                const btn = document.createElement('div');
+                btn.textContent = opt;
+                btn.classList.add('quiz-option');
+                btn.onclick = () => checkAnswer3(btn, opt);
+                quizOptions3.appendChild(btn);
+            });
+        }
+
+        function checkAnswer3(btn, selected) {
+            const correct = quiz3Data[currentQ3].answer;
+            if (selected === correct) {
+                btn.classList.add('correct');
+                score3 += 10;
+                playSound('audio/correct.mp3');
+                quizFeedback3.textContent = "Betul!";
+            } else {
+                btn.classList.add('wrong');
+                playSound('audio/wrong.mp3');
+                quizFeedback3.textContent = `Salah! Jawapan betul: ${correct}`;
+            }
+            document.querySelectorAll('#quiz-options3 .quiz-option').forEach(b => b.onclick = null);
+            nextBtn3.style.display = 'inline-block';
+        }
+
+        nextBtn3.onclick = () => {
+            if (++currentQ3 < quiz3Data.length) loadQuestion3();
+            else {
+                quizResult3.textContent = `Kuiz Tamat! Skor anda: ${score3}/${quiz3Data.length*10}`;
+                quizImg3.style.display = 'none';
+                quizOptions3.style.display = 'none';
+                quizFeedback3.style.display = 'none';
+                nextBtn3.style.display = 'none';
+            }
+        }
+    </script>
+
+</body>
+</html>
